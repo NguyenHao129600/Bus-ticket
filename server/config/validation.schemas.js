@@ -276,3 +276,38 @@ export const bulkCreateBusSeatSchema = Joi.object({
     })
   ).min(1).required(),
 });
+
+// ─── PASSENGERS ──────────────────────────────────────────────────────────────
+
+export const createPassengerSchema = Joi.object({
+  booking_id:   Joi.number().integer().positive().required(),
+  full_name:    Joi.string().max(100).required(),
+  phone_number: Joi.string().max(20).allow(null, '').optional(),
+});
+
+export const updatePassengerSchema = Joi.object({
+  full_name:    Joi.string().max(100).optional(),
+  phone_number: Joi.string().max(20).allow(null, '').optional(),
+}).min(1);
+
+export const listPassengerSchema = Joi.object({
+  booking_id: Joi.number().integer().positive().optional(),
+});
+
+// ─── BOOKING ITEMS ────────────────────────────────────────────────────────────
+
+export const listBookingItemSchema = Joi.object({
+  booking_id: Joi.number().integer().positive().optional(),
+});
+
+// ─── TICKETS ─────────────────────────────────────────────────────────────────
+
+export const createTicketSchema = Joi.object({
+  booking_item_id: Joi.number().integer().positive().required(),
+  passenger_id:    Joi.number().integer().positive().required(),
+});
+
+export const listTicketSchema = Joi.object({
+  booking_id: Joi.number().integer().positive().optional(),
+  status:     Joi.string().valid('active', 'used', 'cancelled', 'expired').optional(),
+});

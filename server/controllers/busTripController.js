@@ -23,7 +23,7 @@ export const create = async (req, res, next) => {
   try {
     const { operator_id, route_id, bus_id, departure_time, arrival_time, ticket_price, status, created_by } = req.body;
     const tripId = await BusTripModel.create({ operator_id, route_id, bus_id, departure_time, arrival_time, ticket_price, status, created_by });
-    const [busSeats] = await db.query('SELECT id FROM bus_seats WHERE bus_id = ?', [bus_id]);
+    const [busSeats] = await db.query('SELECT id FROM bus_seats WHERE bus_id = ?', [Number(bus_id)]);
     if (busSeats.length > 0) await TripSeatModel.bulkCreate(tripId, busSeats.map(s => s.id));
     await TripEventModel.create({ trip_id: tripId, event_type: 'created', note: 'Trip created', created_by });
     const trip = await BusTripModel.getById(tripId);

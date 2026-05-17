@@ -10,6 +10,9 @@ import busTripRoutes       from './busTripRoutes';
 import tripSeatRoutes      from './tripSeatRoutes';
 import tripEventRoutes     from './tripEventRoutes';
 import bookingRoutes       from './bookingRoutes';
+import bookingItemRoutes   from './bookingItemRoutes';
+import passengerRoutes     from './passengerRoutes';
+import ticketRoutes        from './ticketRoutes';
 
 const router = Router();
 
@@ -24,5 +27,8 @@ router.use('/bus-trips',       busTripRoutes);
 router.use('/trip-seats',      tripSeatRoutes);
 router.use('/trip-events',     tripEventRoutes);
 router.use('/bookings',        bookingRoutes);
+router.use('/booking-items',   bookingItemRoutes);
+router.use('/passengers',      passengerRoutes);
+router.use('/tickets',         ticketRoutes);
 
 export default router;
