@@ -8,9 +8,10 @@ import logger from '../config/winston';
  * @param  {Object}   res
  * @param  {Function} next
  */
-export function notFound(req, res, next) {
+export function notFound(req, res) {
     res.status(HttpStatus.NOT_FOUND)
         .json({
+            success: false,
             error: {
                 code: HttpStatus.NOT_FOUND,
                 message: HttpStatus.getStatusText(HttpStatus.NOT_FOUND)
@@ -27,6 +28,7 @@ export function notFound(req, res, next) {
  */
 export function methodNotAllowed(req, res) {
     res.status(HttpStatus.METHOD_NOT_ALLOWED).json({
+        success: false,
         error: {
             code: HttpStatus.METHOD_NOT_ALLOWED,
             message: HttpStatus.getStatusText(HttpStatus.METHOD_NOT_ALLOWED)
@@ -43,12 +45,22 @@ export function methodNotAllowed(req, res) {
  * @param  {Function} next
  */
 export function genericErrorHandler(err, req, res, next) {
-    logger.error(err);
+    void next;
+    logger.error(err.message, {
+        requestId: req.requestId,
+        method: req.method,
+        path: req.originalUrl || req.url,
+        statusCode: err.status || HttpStatus.INTERNAL_SERVER_ERROR,
+        stack: err.stack
+    });
     res.status(err.status || HttpStatus.INTERNAL_SERVER_ERROR)
         .json({
+            success: false,
+            requestId: req.requestId,
             error: {
                 code: err.code || HttpStatus.INTERNAL_SERVER_ERROR,
-                message: err.message || HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+                message: err.message || HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR),
+                details: err.details
             }
         });
 }

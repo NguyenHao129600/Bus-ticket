@@ -1,50 +1,33 @@
-import path from 'path';
 import app from './config/express';
 import routes from './routes/index.js';
 import swagger from './config/swagger';
 import * as errorHandler from './middlewares/errorHandler';
 import joiErrorHandler from './middlewares/joiErrorHandler';
 import requestLogger from './middlewares/requestLogger';
+import rateLimiter from './middlewares/rateLimiter';
 
-// enable webpack hot module replacement in development mode
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-import webpackConfig from '../webpack/webpack.config.dev';
-
-if (process.env.NODE_ENV === 'development') {
-
-    const compiler = webpack(webpackConfig);
-    app.use(webpackDevMiddleware(compiler, {noInfo: true, publicPath: webpackConfig.output.publicPath}));
-    app.use(webpackHotMiddleware(compiler));
-}
-
-// Swagger API documentation
-app.get('/swagger.json', (req, res) => {
-   res.json(swagger);
+app.get('/health', (req, res) => {
+  return res.json({
+    success: true,
+    status: 'ok',
+    uptime: process.uptime(),
+  });
 });
 
-// Request logger
-app.use(requestLogger);
+app.get('/swagger.json', (req, res) => {
+  return res.json(swagger);
+});
 
-// Router
+app.get('/swagger', (req, res) => {
+  return res.redirect('/swagger/');
+});
+
+app.use(requestLogger);
+app.use(rateLimiter);
 app.use('/api', routes);
 
-// Landing page
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
-
-// Joi Error Handler Middleware
 app.use(joiErrorHandler);
-
-// Error Handler Middleware
-app.use(errorHandler.genericErrorHandler);
 app.use(errorHandler.notFound);
-app.use(errorHandler.methodNotAllowed);
-
-app.listen(app.get('port'), app.get('host'), () => {
-    console.log(`Server running at http://${app.get('host')}:${app.get('port')}`);
-});
+app.use(errorHandler.genericErrorHandler);
 
 export default app;

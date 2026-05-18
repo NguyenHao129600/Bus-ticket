@@ -2,6 +2,7 @@
   "env": {
     "browser": true,
     "node": true,
+    "es6": true,
     "jasmine": true
   },
   "extends": [
@@ -11,13 +12,12 @@
   "parser": "babel-eslint",
   "rules": {
     "semi": 2,
-    "curly": 2,
+    "curly": 0,
     "eqeqeq": 2,
     "spaced-comment": 2,
     "space-infix-ops": 2,
-    "newline-before-return": 2,
+    "newline-before-return": 0,
     "linebreak-style": [2, "unix"],
-    "camelcase": [2, {"properties": "never"}],
     "quotes": [2, "single", {"allowTemplateLiterals": true}],
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",

@@ -1,58 +1,53 @@
-Express, React/Redux, MySQL Boilerplate
+# Bus Ticket
 
-## Get Started
+Express + MySQL2 backend with a React client.
 
-### 1. Prerequisites
+## Backend Setup
 
-- [NodeJs](https://nodejs.org/en/)
-- [NPM](https://npmjs.org/) - Node package manager
-- [MySQL](https://www.mysql.com/downloads/) - Relational database management system (RDBMS)
+Create local environment config:
 
-### 2. Installation
-
-On the command prompt run the following commands:
-
-``` 
- $ git clone https://github.com/Bikranshu/express-react-boilerplate.git
- $ cd express-react-boilerplate
- $ cp .env.example .env (edit it with your secret key and database information)
- $ npm install
- $ npm run migrate
- ```
- Finally, start and build the application:
- 
- ```
- $ npm run build (For development)
- $ npm run build:prod (For production)
+```bash
+cp .env.example .env
 ```
 
-List of NPM Commands:
- 
-  ```
-  $ npm run lint       # linting
-  $ npm run clean      # remove dist and node_modules folder and install dependencies
- ```
+Create the MySQL database and import the baseline schema manually:
 
-### 3. Usage
+```bash
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS bus_booking CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p bus_booking < server/database/schema.sql
+```
 
-URL : http://localhost:3000/
+Install dependencies and start the API:
 
-Navigate to http://localhost:3000/swagger/ for the API documentation.
+```bash
+npm install
+npm run dev
+```
 
-### 4. Useful Link
-- Web framework for Node.js - [Express](http://expressjs.com/)
-- JavaScript ORM  for Node.js - [Bookshelf](http://bookshelfjs.org/)
-- SQL Query Builder for Postgres, MSSQL, MySQL, MariaDB, SQLite3, and Oracle - [Knex](http://knexjs.org/)
-- JSON Web Tokens(jwt) - [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
-- Logging Library - [Winston](https://www.npmjs.com/package/winston)
-- Object schema validation  - [Joi](https://www.npmjs.com/package/joi)
-- API documentation using [swagger-jsdoc](https://www.npmjs.com/package/swagger-jsdoc) and [swagger-ui](https://www.npmjs.com/package/swagger-ui)
-- JavaScript library for building user interfaces - [React](https://facebook.github.io/react/)
-- Predictable state container - [Redux](http://redux.js.org/)
-- A React component library implementing Google's Material Design - [Material-UI](https://material-ui-1dab0.firebaseapp.com/)
-- Redux Form - [Redux Form](http://redux-form.com/8.3.0/)
-- Declarative routing for React - [React-Router](https://reacttraining.com/react-router/)
-- Promise based HTTP client - [Axios](https://github.com/mzabriskie/axios)
-- Environment configuration - [dotenv](https://www.npmjs.com/package/dotenv)
-- Code linting tool - [ESLint](http://eslint.org/)
-- Code formatter - [Prettier](https://www.npmjs.com/package/prettier)
+For production-style start:
+
+```bash
+npm start
+```
+
+## API
+
+- Health check: `GET /health`
+- Swagger JSON: `GET /swagger.json`
+- API prefix: `/api`
+- Auth:
+  - `POST /api/auth/register`
+  - `POST /api/auth/login`
+  - `GET /api/auth/me`
+
+The backend uses `mysql2` directly. Knex/Bookshelf migration CLI setup was removed; schema changes should be managed as SQL files or by your DB migration tool of choice.
+
+## Scripts
+
+```bash
+npm run dev
+npm start
+npm run build
+npm run build:prod
+npm run lint
+```

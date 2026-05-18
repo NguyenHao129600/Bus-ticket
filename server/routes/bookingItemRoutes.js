@@ -1,12 +1,15 @@
 import { Router } from 'express';
-import * as ctrl from '../controllers/bookingItemController';
+import * as controller from '../controllers/bookingItemController';
 import { validate } from '../config/joi.validate';
-import { listBookingItemSchema } from '../config/validation.schemas';
+import { listBookingItemSchema } from '../validators';
+import authenticate from '../middlewares/authenticate';
+import authorize from '../middlewares/authorize';
 
 const router = Router();
+const manageBookingItems = [authenticate, authorize('admin', 'operator_staff')];
 
-router.get('/',    validate(listBookingItemSchema, 'query'), ctrl.getAll);
-router.get('/:id', ctrl.getById);
-router.delete('/:id', ctrl.remove);
+router.get('/',    manageBookingItems, validate(listBookingItemSchema, 'query'), controller.getAll);
+router.get('/:id', manageBookingItems, controller.getById);
+router.delete('/:id', manageBookingItems, controller.remove);
 
 export default router;

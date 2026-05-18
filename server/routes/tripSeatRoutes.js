@@ -1,14 +1,18 @@
 import { Router } from 'express';
-import * as ctrl from '../controllers/tripSeatController';
+import * as controller from '../controllers/tripSeatController';
 import { validate } from '../config/joi.validate';
-import { lockSeatSchema, releaseSeatSchema, updateTripSeatStatusSchema, listTripSeatSchema } from '../config/validation.schemas';
+import { lockSeatSchema, releaseSeatSchema, updateTripSeatStatusSchema, listTripSeatSchema } from '../validators';
+import authenticate from '../middlewares/authenticate';
+import authorize from '../middlewares/authorize';
 
 const router = Router();
+const authenticated = [authenticate];
+const manageSeats = [authenticate, authorize('admin', 'operator_staff')];
 
-router.get('/',             validate(listTripSeatSchema, 'query'), ctrl.getAll);
-router.get('/:id',          ctrl.getById);
-router.post('/lock',        validate(lockSeatSchema), ctrl.lockSeat);
-router.post('/release',     validate(releaseSeatSchema), ctrl.releaseSeat);
-router.patch('/:id/status', validate(updateTripSeatStatusSchema), ctrl.updateStatus);
+router.get('/',             validate(listTripSeatSchema, 'query'), controller.getAll);
+router.get('/:id',          controller.getById);
+router.post('/lock',        authenticated, validate(lockSeatSchema), controller.lockSeat);
+router.post('/release',     authenticated, validate(releaseSeatSchema), controller.releaseSeat);
+router.patch('/:id/status', manageSeats, validate(updateTripSeatStatusSchema), controller.updateStatus);
 
 export default router;
