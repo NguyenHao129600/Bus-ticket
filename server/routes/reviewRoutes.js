@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as controller from '../controllers/reviewController';
 import { validate } from '../config/joi.validate';
-import { createReviewSchema, updateReviewSchema, listReviewSchema } from '../config/validation.schemas';
+import { createReviewSchema, updateReviewSchema, listReviewSchema } from '../validators';
 import authenticate from '../middlewares/authenticate';
 
 const router = Router();

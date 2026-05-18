@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as controller from '../controllers/ticketController';
 import { validate } from '../config/joi.validate';
-import { createTicketSchema, listTicketSchema } from '../config/validation.schemas';
+import { createTicketSchema, listTicketSchema } from '../validators';
 import authenticate from '../middlewares/authenticate';
 import authorize from '../middlewares/authorize';
 

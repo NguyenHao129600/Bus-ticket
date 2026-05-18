@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as controller from '../controllers/busTripController';
 import { validate } from '../config/joi.validate';
-import { createBusTripSchema, updateBusTripSchema, updateTripStatusSchema, listBusTripSchema } from '../config/validation.schemas';
+import { createBusTripSchema, updateBusTripSchema, updateTripStatusSchema, listBusTripSchema } from '../validators';
 import authenticate from '../middlewares/authenticate';
 import authorize from '../middlewares/authorize';
 

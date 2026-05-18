@@ -4,7 +4,7 @@ import { validate } from '../config/joi.validate';
 import {
   createBusSchema, updateBusSchema, listBusSchema,
   createBusSeatSchema, updateBusSeatSchema, bulkCreateBusSeatSchema,
-} from '../config/validation.schemas';
+} from '../validators';
 import authenticate from '../middlewares/authenticate';
 import authorize from '../middlewares/authorize';
 

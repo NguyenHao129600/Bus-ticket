@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as controller from '../controllers/tripSeatController';
 import { validate } from '../config/joi.validate';
-import { lockSeatSchema, releaseSeatSchema, updateTripSeatStatusSchema, listTripSeatSchema } from '../config/validation.schemas';
+import { lockSeatSchema, releaseSeatSchema, updateTripSeatStatusSchema, listTripSeatSchema } from '../validators';
 import authenticate from '../middlewares/authenticate';
 import authorize from '../middlewares/authorize';
 

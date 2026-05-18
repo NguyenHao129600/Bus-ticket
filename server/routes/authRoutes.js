@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as controller from '../controllers/authController';
 import { validate } from '../config/joi.validate';
-import { loginSchema, registerSchema } from '../config/validation.schemas';
+import { loginSchema, registerSchema } from '../validators';
 import authenticate from '../middlewares/authenticate';
 
 const router = Router();

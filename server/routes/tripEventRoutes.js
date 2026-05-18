@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as controller from '../controllers/tripEventController';
 import { validate } from '../config/joi.validate';
-import { createTripEventSchema, listTripEventSchema } from '../config/validation.schemas';
+import { createTripEventSchema, listTripEventSchema } from '../validators';
 import authenticate from '../middlewares/authenticate';
 import authorize from '../middlewares/authorize';
 

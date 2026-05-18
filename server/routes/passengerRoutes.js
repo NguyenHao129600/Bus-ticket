@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as controller from '../controllers/passengerController';
 import { validate } from '../config/joi.validate';
-import { createPassengerSchema, updatePassengerSchema, listPassengerSchema } from '../config/validation.schemas';
+import { createPassengerSchema, updatePassengerSchema, listPassengerSchema } from '../validators';
 import authenticate from '../middlewares/authenticate';
 
 const router = Router();

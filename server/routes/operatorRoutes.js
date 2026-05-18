@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as controller from '../controllers/operatorController';
 import { validate } from '../config/joi.validate';
-import { createOperatorSchema, updateOperatorSchema, listOperatorSchema } from '../config/validation.schemas';
+import { createOperatorSchema, updateOperatorSchema, listOperatorSchema } from '../validators';
 import authenticate from '../middlewares/authenticate';
 import authorize from '../middlewares/authorize';
 
