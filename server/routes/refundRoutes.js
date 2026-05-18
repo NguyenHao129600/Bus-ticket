@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as ctrl from '../controllers/refundController';
 import { validate } from '../config/joi.validate';
-import { createRefundSchema, updateRefundStatusSchema, listRefundSchema } from '../config/validation.schemas';
+import { createRefundSchema, updateRefundStatusSchema, listRefundSchema } from '../validators';
 
 const router = Router();
 
