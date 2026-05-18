@@ -13,6 +13,8 @@ import bookingRoutes       from './bookingRoutes';
 import bookingItemRoutes   from './bookingItemRoutes';
 import passengerRoutes     from './passengerRoutes';
 import ticketRoutes        from './ticketRoutes';
+import paymentRoutes       from './paymentRoutes';
+import refundRoutes        from './refundRoutes';
 
 const router = Router();
 
@@ -30,5 +32,7 @@ router.use('/bookings',        bookingRoutes);
 router.use('/booking-items',   bookingItemRoutes);
 router.use('/passengers',      passengerRoutes);
 router.use('/tickets',         ticketRoutes);
+router.use('/payments',        paymentRoutes);
+router.use('/refunds',         refundRoutes);
 
 export default router;
