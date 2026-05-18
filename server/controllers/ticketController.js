@@ -2,6 +2,23 @@ import TicketModel from '../models/ticketModel';
 import PassengerModel from '../models/passengerModel';
 import BookingItemModel from '../models/bookingItemModel';
 import db from '../config/db';
+import AppError from '../utils/AppError';
+
+const canManageTickets = (user) => {
+  return user && ['admin', 'operator_staff'].includes(user.role);
+};
+
+const assertCanAccessTicket = (user, ticket) => {
+  if (!ticket) {
+    throw new AppError('Ticket not found', 404);
+  }
+
+  if (canManageTickets(user) || Number(ticket.user_id) === Number(user.id)) {
+    return;
+  }
+
+  throw new AppError('Forbidden', 403);
+};
 
 export const getAll = async (req, res, next) => {
   try {
@@ -14,7 +31,7 @@ export const getAll = async (req, res, next) => {
 export const getById = async (req, res, next) => {
   try {
     const ticket = await TicketModel.getById(req.params.id);
-    if (!ticket) return res.status(404).json({ success: false, message: 'Ticket not found' });
+    assertCanAccessTicket(req.user, ticket);
     return res.json({ success: true, data: ticket });
   } catch (err) { next(err); }
 };
@@ -22,12 +39,11 @@ export const getById = async (req, res, next) => {
 export const getByCode = async (req, res, next) => {
   try {
     const ticket = await TicketModel.getByCode(req.params.code);
-    if (!ticket) return res.status(404).json({ success: false, message: 'Ticket not found' });
+    assertCanAccessTicket(req.user, ticket);
     return res.json({ success: true, data: ticket });
   } catch (err) { next(err); }
 };
 
-// Tạo ticket: gắn passenger vào booking_item
 // POST /api/tickets  body: { booking_item_id, passenger_id }
 export const create = async (req, res, next) => {
   try {
@@ -39,7 +55,6 @@ export const create = async (req, res, next) => {
     const passenger = await PassengerModel.getById(passenger_id);
     if (!passenger) return res.status(404).json({ success: false, message: 'Passenger not found' });
 
-    // Kiểm tra booking_item đã có ticket chưa
     const [existing] = await db.query(
       'SELECT id FROM tickets WHERE booking_item_id = ?', [booking_item_id]
     );
@@ -69,7 +84,7 @@ export const checkIn = async (req, res, next) => {
 export const cancel = async (req, res, next) => {
   try {
     const ticket = await TicketModel.getByCode(req.params.code);
-    if (!ticket) return res.status(404).json({ success: false, message: 'Ticket not found' });
+    assertCanAccessTicket(req.user, ticket);
     await TicketModel.updateStatus(req.params.code, 'cancelled');
     const updated = await TicketModel.getByCode(req.params.code);
     return res.json({ success: true, data: updated });

@@ -1,25 +1,28 @@
 import { Router } from 'express';
-import * as ctrl from '../controllers/busController';
+import * as controller from '../controllers/busController';
 import { validate } from '../config/joi.validate';
 import {
   createBusSchema, updateBusSchema, listBusSchema,
   createBusSeatSchema, updateBusSeatSchema, bulkCreateBusSeatSchema,
 } from '../config/validation.schemas';
+import authenticate from '../middlewares/authenticate';
+import authorize from '../middlewares/authorize';
 
 const router = Router();
+const manageBuses = [authenticate, authorize('admin', 'operator_staff')];
 
 // Bus CRUD
-router.get('/',    validate(listBusSchema, 'query'), ctrl.getAll);
-router.get('/:id', ctrl.getById);
-router.post('/',   validate(createBusSchema), ctrl.create);
-router.put('/:id', validate(updateBusSchema), ctrl.update);
-router.delete('/:id', ctrl.remove);
+router.get('/',    validate(listBusSchema, 'query'), controller.getAll);
+router.get('/:id', controller.getById);
+router.post('/',   manageBuses, validate(createBusSchema), controller.create);
+router.put('/:id', manageBuses, validate(updateBusSchema), controller.update);
+router.delete('/:id', manageBuses, controller.remove);
 
 // Bus Seats (nested)
-router.get('/:id/seats',            ctrl.getSeats);
-router.post('/:id/seats',           validate(createBusSeatSchema), ctrl.createSeat);
-router.post('/:id/seats/bulk',      validate(bulkCreateBusSeatSchema), ctrl.bulkCreateSeats);
-router.put('/:id/seats/:seat_id',   validate(updateBusSeatSchema), ctrl.updateSeat);
-router.delete('/:id/seats/:seat_id', ctrl.deleteSeat);
+router.get('/:id/seats',            controller.getSeats);
+router.post('/:id/seats',           manageBuses, validate(createBusSeatSchema), controller.createSeat);
+router.post('/:id/seats/bulk',      manageBuses, validate(bulkCreateBusSeatSchema), controller.bulkCreateSeats);
+router.put('/:id/seats/:seat_id',   manageBuses, validate(updateBusSeatSchema), controller.updateSeat);
+router.delete('/:id/seats/:seat_id', manageBuses, controller.deleteSeat);
 
 export default router;

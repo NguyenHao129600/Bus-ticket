@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import authRoutes          from './authRoutes';
 import userRoutes          from './userRoutes';
 import operatorRoutes      from './operatorRoutes';
 import operatorStaffRoutes from './operatorStaffRoutes';
@@ -16,6 +17,7 @@ import ticketRoutes        from './ticketRoutes';
 
 const router = Router();
 
+router.use('/auth',            authRoutes);
 router.use('/users',           userRoutes);
 router.use('/operators',       operatorRoutes);
 router.use('/operator-staffs', operatorStaffRoutes);

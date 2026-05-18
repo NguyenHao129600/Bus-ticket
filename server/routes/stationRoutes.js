@@ -1,15 +1,18 @@
 import { Router } from 'express';
-import * as ctrl from '../controllers/stationController';
+import * as controller from '../controllers/stationController';
 import { validate } from '../config/joi.validate';
 import { createStationSchema, updateStationSchema, listStationSchema } from '../config/validation.schemas';
+import authenticate from '../middlewares/authenticate';
+import authorize from '../middlewares/authorize';
 
 const router = Router();
+const manageStations = [authenticate, authorize('admin', 'operator_staff')];
 
-router.get('/provinces', ctrl.getProvinces);
-router.get('/',          validate(listStationSchema, 'query'), ctrl.getAll);
-router.get('/:id',       ctrl.getById);
-router.post('/',         validate(createStationSchema), ctrl.create);
-router.put('/:id',       validate(updateStationSchema), ctrl.update);
-router.delete('/:id',    ctrl.remove);
+router.get('/provinces', controller.getProvinces);
+router.get('/',          validate(listStationSchema, 'query'), controller.getAll);
+router.get('/:id',       controller.getById);
+router.post('/',         manageStations, validate(createStationSchema), controller.create);
+router.put('/:id',       manageStations, validate(updateStationSchema), controller.update);
+router.delete('/:id',    manageStations, controller.remove);
 
 export default router;

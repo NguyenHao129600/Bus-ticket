@@ -14,9 +14,11 @@ const TicketModel = {
         t.booking_item_id, t.passenger_id,
         p.full_name AS passenger_name, p.phone_number AS passenger_phone,
         bs.seat_number, bs.seat_type,
-        bi.booking_id
+        bi.booking_id,
+        b.user_id
        FROM tickets t
        JOIN booking_items bi ON bi.id = t.booking_item_id
+       JOIN bookings b      ON b.id = bi.booking_id
        JOIN trip_seats ts    ON ts.id = bi.trip_seat_id
        JOIN bus_seats bs     ON bs.id = ts.bus_seat_id
        JOIN passengers p     ON p.id = t.passenger_id
@@ -33,11 +35,13 @@ const TicketModel = {
         p.full_name AS passenger_name, p.phone_number AS passenger_phone,
         bs.seat_number, bs.seat_type,
         bi.booking_id,
+        b.user_id,
         bt.departure_time, bt.arrival_time,
         dep.name AS departure_station,
         arr.name AS arrival_station
        FROM tickets t
        JOIN booking_items bi ON bi.id = t.booking_item_id
+       JOIN bookings b      ON b.id = bi.booking_id
        JOIN trip_seats ts    ON ts.id = bi.trip_seat_id
        JOIN bus_seats bs     ON bs.id = ts.bus_seat_id
        JOIN passengers p     ON p.id = t.passenger_id
@@ -54,9 +58,11 @@ const TicketModel = {
     const [rows] = await db.query(
       `SELECT t.id, t.ticket_code, t.qr_code, t.status, t.issued_at,
               t.booking_item_id, t.passenger_id,
-              p.full_name AS passenger_name, bs.seat_number, bs.seat_type
+              p.full_name AS passenger_name, bs.seat_number, bs.seat_type,
+              bi.booking_id, b.user_id
        FROM tickets t
        JOIN booking_items bi ON bi.id = t.booking_item_id
+       JOIN bookings b      ON b.id = bi.booking_id
        JOIN trip_seats ts    ON ts.id = bi.trip_seat_id
        JOIN bus_seats bs     ON bs.id = ts.bus_seat_id
        JOIN passengers p     ON p.id = t.passenger_id
