@@ -12,6 +12,7 @@ const assertCanAccessBooking = (user, booking) => {
     throw new AppError('Booking not found', 404);
   }
 
+<<<<<<< HEAD
   if (user && user.role === 'admin') {
     return;
   }
@@ -21,6 +22,9 @@ const assertCanAccessBooking = (user, booking) => {
   }
 
   if (Number(booking.user_id) === Number(user.id)) {
+=======
+  if (canManageBookings(user) || Number(booking.user_id) === Number(user.id)) {
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
     return;
   }
 
@@ -28,6 +32,7 @@ const assertCanAccessBooking = (user, booking) => {
 };
 
 const BookingService = {
+<<<<<<< HEAD
   getAll: async (filters, user = null) => {
     const scopedFilters = { ...filters };
     if (user && user.role === 'operator_staff') {
@@ -35,6 +40,10 @@ const BookingService = {
     }
 
     return BookingModel.getAll(scopedFilters);
+=======
+  getAll: async (filters) => {
+    return BookingModel.getAll(filters);
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
   },
 
   getById: async (id, user) => {

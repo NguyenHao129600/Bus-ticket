@@ -14,6 +14,11 @@ export const listRefundSchema = Joi.object({
   page: Joi.number().integer().min(1).optional(),
   limit: Joi.number().integer().min(1).max(100).optional(),
   payment_id: Joi.number().integer().positive().optional(),
+<<<<<<< HEAD
   trip_id: Joi.number().integer().positive().optional(),
   status: Joi.string().valid('pending', 'approved', 'rejected').optional(),
 });
+=======
+  status: Joi.string().valid('pending', 'approved', 'rejected').optional(),
+});
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a

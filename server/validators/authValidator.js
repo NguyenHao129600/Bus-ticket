@@ -11,6 +11,7 @@ export const loginSchema = Joi.object({
   email:    Joi.string().email().max(100).required(),
   password: Joi.string().required(),
 });
+<<<<<<< HEAD
 
 export const registerOperatorStaffSchema = Joi.object({
   full_name:    Joi.string().max(100).required(),
@@ -26,3 +27,5 @@ export const loginOperatorStaffSchema = Joi.object({
   password:    Joi.string().required(),
   operator_id: Joi.number().integer().positive().optional(),
 });
+=======
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a

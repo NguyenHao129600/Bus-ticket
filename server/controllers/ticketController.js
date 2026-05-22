@@ -1,7 +1,10 @@
 import TicketModel from '../models/ticketModel';
 import PassengerModel from '../models/passengerModel';
 import BookingItemModel from '../models/bookingItemModel';
+<<<<<<< HEAD
 import TripSeatModel from '../models/tripSeatModel';
+=======
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
 import db from '../config/db';
 import AppError from '../utils/AppError';
 
@@ -14,6 +17,7 @@ const assertCanAccessTicket = (user, ticket) => {
     throw new AppError('Ticket not found', 404);
   }
 
+<<<<<<< HEAD
   if (user && user.role === 'admin') {
     return;
   }
@@ -23,6 +27,9 @@ const assertCanAccessTicket = (user, ticket) => {
   }
 
   if (Number(ticket.user_id) === Number(user.id)) {
+=======
+  if (canManageTickets(user) || Number(ticket.user_id) === Number(user.id)) {
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
     return;
   }
 
@@ -31,6 +38,7 @@ const assertCanAccessTicket = (user, ticket) => {
 
 export const getAll = async (req, res, next) => {
   try {
+<<<<<<< HEAD
     const { booking_id, status, trip_id } = req.query;
     const filters = { booking_id, status, trip_id };
     if (req.user && req.user.role === 'operator_staff') {
@@ -38,6 +46,10 @@ export const getAll = async (req, res, next) => {
     }
 
     const rows = await TicketModel.getAll(filters);
+=======
+    const { booking_id, status } = req.query;
+    const rows = await TicketModel.getAll({ booking_id, status });
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
     return res.json({ success: true, data: rows, total: rows.length });
   } catch (err) { next(err); }
 };
@@ -84,7 +96,11 @@ export const create = async (req, res, next) => {
 export const checkIn = async (req, res, next) => {
   try {
     const ticket = await TicketModel.getByCode(req.params.code);
+<<<<<<< HEAD
     assertCanAccessTicket(req.user, ticket);
+=======
+    if (!ticket) return res.status(404).json({ success: false, message: 'Ticket not found' });
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
     if (ticket.status !== 'active') {
       return res.status(400).json({ success: false, message: `Ticket is ${ticket.status}, cannot check in` });
     }
@@ -99,6 +115,7 @@ export const cancel = async (req, res, next) => {
   try {
     const ticket = await TicketModel.getByCode(req.params.code);
     assertCanAccessTicket(req.user, ticket);
+<<<<<<< HEAD
     if (ticket.status === 'used') {
       return res.status(400).json({ success: false, message: 'Used ticket cannot be cancelled' });
     }
@@ -108,10 +125,14 @@ export const cancel = async (req, res, next) => {
 
     await TicketModel.updateStatus(req.params.code, 'cancelled');
     await TripSeatModel.releaseSeat(ticket.trip_seat_id);
+=======
+    await TicketModel.updateStatus(req.params.code, 'cancelled');
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
     const updated = await TicketModel.getByCode(req.params.code);
     return res.json({ success: true, data: updated });
   } catch (err) { next(err); }
 };
+<<<<<<< HEAD
 
 export const getTripTickets = async (req, res, next) => {
   try {
@@ -128,3 +149,5 @@ export const getTripTickets = async (req, res, next) => {
     return res.json({ success: true, data: rows, total: rows.length });
   } catch (err) { next(err); }
 };
+=======
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a

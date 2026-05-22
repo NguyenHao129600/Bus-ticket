@@ -20,6 +20,7 @@ export const login = async (req, res, next) => {
   }
 };
 
+<<<<<<< HEAD
 export const registerOperatorStaff = async (req, res, next) => {
   try {
     const result = await AuthService.registerOperatorStaff(req.body);
@@ -50,6 +51,8 @@ export const logoutOperatorStaff = async (req, res, next) => {
   }
 };
 
+=======
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
 export const me = async (req, res, next) => {
   try {
     const user = await AuthService.getProfile(req.user.id);
@@ -60,6 +63,7 @@ export const me = async (req, res, next) => {
   }
 };
 
+<<<<<<< HEAD
 export const meOperatorStaff = async (req, res, next) => {
   try {
     const profile = await AuthService.getOperatorStaffProfile(req.user.id, req.user.operator_staff_id);
@@ -69,3 +73,5 @@ export const meOperatorStaff = async (req, res, next) => {
     return next(err);
   }
 };
+=======
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a

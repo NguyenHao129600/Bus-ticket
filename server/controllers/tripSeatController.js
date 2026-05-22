@@ -1,4 +1,5 @@
 import TripSeatModel from '../models/tripSeatModel';
+<<<<<<< HEAD
 import BusTripModel from '../models/busTripModel';
 import AppError from '../utils/AppError';
 
@@ -26,6 +27,8 @@ const ensureSeatAccess = async (req, seatId) => {
   await ensureTripAccess(req, seat.trip_id);
   return seat;
 };
+=======
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
 
 export const getAll = async (req, res, next) => {
   try {
@@ -43,6 +46,7 @@ export const getById = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
+<<<<<<< HEAD
 export const getAvailableSeatsByTrip = async (req, res, next) => {
   try {
     await TripSeatModel.releaseExpiredLocks();
@@ -70,6 +74,8 @@ export const getBookedSeatsByTrip = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
+=======
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
 export const lockSeat = async (req, res, next) => {
   try {
     const { trip_seat_id, user_id, lock_minutes } = req.body;
@@ -98,11 +104,17 @@ export const releaseSeat = async (req, res, next) => {
 export const updateStatus = async (req, res, next) => {
   try {
     const { status } = req.body;
+<<<<<<< HEAD
     const seat = await ensureSeatAccess(req, req.params.id);
+=======
+    const seat = await TripSeatModel.getById(req.params.id);
+    if (!seat) return res.status(404).json({ success: false, message: 'Trip seat not found' });
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
     await TripSeatModel.updateStatus(req.params.id, status);
     const updated = await TripSeatModel.getById(req.params.id);
     return res.json({ success: true, data: updated });
   } catch (err) { next(err); }
+<<<<<<< HEAD
 };
 
 export const operatorLockSeat = async (req, res, next) => {
@@ -140,3 +152,6 @@ export const operatorReleaseSeat = async (req, res, next) => {
     return res.json({ success: true, data: updated });
   } catch (err) { next(err); }
 };
+=======
+};
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a

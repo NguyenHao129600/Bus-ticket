@@ -22,6 +22,7 @@ const PassengerModel = {
     return rows[0] || null;
   },
 
+<<<<<<< HEAD
   getByTripId: async (trip_id) => {
     const [rows] = await db.query(
       `SELECT
@@ -43,6 +44,8 @@ const PassengerModel = {
     return rows;
   },
 
+=======
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
   create: async ({ booking_id, full_name, phone_number }) => {
     const now = new Date();
     const [result] = await db.query(
@@ -73,4 +76,8 @@ const PassengerModel = {
   },
 };
 
+<<<<<<< HEAD
 export default PassengerModel;
+=======
+export default PassengerModel;
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a

@@ -1,20 +1,31 @@
 import db from '../config/db';
 
 const BookingModel = {
+<<<<<<< HEAD
   getAll: async ({ page = 1, limit = 10, user_id, trip_id, status, operator_id } = {}) => {
+=======
+  getAll: async ({ page = 1, limit = 10, user_id, trip_id, status } = {}) => {
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
     const offset = (page - 1) * limit;
     const params = [];
     let where = 'WHERE 1=1';
     if (user_id) { where += ' AND b.user_id = ?'; params.push(user_id); }
     if (trip_id) { where += ' AND b.trip_id = ?'; params.push(trip_id); }
     if (status)  { where += ' AND b.status = ?';  params.push(status); }
+<<<<<<< HEAD
     if (operator_id) { where += ' AND bt.operator_id = ?'; params.push(operator_id); }
+=======
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
     const [countRows] = await db.query(`SELECT COUNT(*) AS total FROM bookings b ${where}`, params);
     const total = countRows[0].total;
     const [rows] = await db.query(
       `SELECT b.id, b.total_amount, b.status, b.booked_at, b.created_at, b.updated_at,
               b.user_id, u.full_name AS user_name, u.email AS user_email,
+<<<<<<< HEAD
               b.trip_id, bt.operator_id, bt.departure_time, bt.arrival_time,
+=======
+              b.trip_id, bt.departure_time, bt.arrival_time,
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
               dep.name AS departure_station, arr.name AS arrival_station
        FROM bookings b
        JOIN users u      ON u.id = b.user_id AND u.deleted_at IS NULL
@@ -32,7 +43,11 @@ const BookingModel = {
     const [bookingRows] = await db.query(
       `SELECT b.id, b.total_amount, b.status, b.booked_at, b.created_at, b.updated_at,
               b.user_id, u.full_name AS user_name, u.email AS user_email,
+<<<<<<< HEAD
               b.trip_id, bt.operator_id, bt.departure_time, bt.arrival_time, bt.ticket_price,
+=======
+              b.trip_id, bt.departure_time, bt.arrival_time, bt.ticket_price,
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
               dep.name AS departure_station, arr.name AS arrival_station
        FROM bookings b
        JOIN users u      ON u.id = b.user_id AND u.deleted_at IS NULL
@@ -77,4 +92,8 @@ const BookingModel = {
   },
 };
 
+<<<<<<< HEAD
 export default BookingModel;
+=======
+export default BookingModel;
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a

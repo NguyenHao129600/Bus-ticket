@@ -1,4 +1,5 @@
 import BookingService from '../services/bookingService';
+<<<<<<< HEAD
 import BusTripModel from '../models/busTripModel';
 import AppError from '../utils/AppError';
 
@@ -16,11 +17,17 @@ const ensureTripAccess = async (req, tripId) => {
 
   return trip;
 };
+=======
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
 
 export const getAll = async (req, res, next) => {
   try {
     const { page, limit, user_id, trip_id, status } = req.query;
+<<<<<<< HEAD
     const result = await BookingService.getAll({ page, limit, user_id, trip_id, status }, req.user);
+=======
+    const result = await BookingService.getAll({ page, limit, user_id, trip_id, status });
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
     return res.json({ success: true, ...result });
   } catch (err) { next(err); }
 };
@@ -32,6 +39,7 @@ export const getById = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
+<<<<<<< HEAD
 export const getByTripId = async (req, res, next) => {
   try {
     await ensureTripAccess(req, req.params.trip_id);
@@ -44,6 +52,8 @@ export const getByTripId = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
+=======
+>>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
 export const create = async (req, res, next) => {
   try {
     const booking = await BookingService.create({ user: req.user, payload: req.body });
