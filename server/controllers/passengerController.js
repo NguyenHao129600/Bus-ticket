@@ -1,6 +1,5 @@
-import PassengerModel from '../models/passengerModel';
+﻿import PassengerModel from '../models/passengerModel';
 import BookingModel from '../models/bookingModel';
-<<<<<<< HEAD
 import BusTripModel from '../models/busTripModel';
 import AppError from '../utils/AppError';
 
@@ -18,8 +17,6 @@ const ensureTripAccess = async (req, tripId) => {
 
   return trip;
 };
-=======
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
 
 export const getAll = async (req, res, next) => {
   try {
@@ -37,7 +34,6 @@ export const getById = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-<<<<<<< HEAD
 export const getByTripId = async (req, res, next) => {
   try {
     await ensureTripAccess(req, req.params.trip_id);
@@ -46,8 +42,6 @@ export const getByTripId = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-=======
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
 export const create = async (req, res, next) => {
   try {
     const { booking_id, full_name, phone_number } = req.body;
@@ -77,8 +71,4 @@ export const remove = async (req, res, next) => {
     if (!affected) return res.status(404).json({ success: false, message: 'Passenger not found' });
     return res.json({ success: true, message: 'Passenger deleted successfully' });
   } catch (err) { next(err); }
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a

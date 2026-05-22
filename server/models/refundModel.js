@@ -1,21 +1,14 @@
-import db from '../config/db';
+﻿import db from '../config/db';
 
 const RefundModel = {
-<<<<<<< HEAD
   getAll: async ({ page = 1, limit = 10, payment_id, status, trip_id, operator_id } = {}) => {
-=======
-  getAll: async ({ page = 1, limit = 10, payment_id, status } = {}) => {
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
     const offset = (page - 1) * limit;
     const params = [];
     let where = 'WHERE 1=1';
     if (payment_id) { where += ' AND r.payment_id = ?'; params.push(payment_id); }
     if (status)     { where += ' AND r.status = ?';     params.push(status); }
-<<<<<<< HEAD
     if (trip_id)    { where += ' AND b.trip_id = ?';    params.push(trip_id); }
     if (operator_id) { where += ' AND bt.operator_id = ?'; params.push(operator_id); }
-=======
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
 
     const [countRows] = await db.query(`SELECT COUNT(*) AS total FROM refunds r ${where}`, params);
     const total = countRows[0].total;
@@ -23,18 +16,11 @@ const RefundModel = {
       `SELECT
         r.id, r.amount, r.reason, r.status, r.refunded_at, r.created_at, r.updated_at,
         r.payment_id, p.method AS payment_method, p.amount AS payment_amount,
-<<<<<<< HEAD
         b.id AS booking_id, b.trip_id, bt.operator_id, u.full_name AS user_name
        FROM refunds r
        JOIN payments p ON p.id = r.payment_id
        JOIN bookings b ON b.id = p.booking_id
        JOIN bus_trips bt ON bt.id = b.trip_id AND bt.deleted_at IS NULL
-=======
-        b.id AS booking_id, u.full_name AS user_name
-       FROM refunds r
-       JOIN payments p ON p.id = r.payment_id
-       JOIN bookings b ON b.id = p.booking_id
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
        JOIN users u    ON u.id = b.user_id AND u.deleted_at IS NULL
        ${where}
        ORDER BY r.created_at DESC LIMIT ? OFFSET ?`,
@@ -48,18 +34,11 @@ const RefundModel = {
       `SELECT
         r.id, r.amount, r.reason, r.status, r.refunded_at, r.created_at, r.updated_at,
         r.payment_id, p.method AS payment_method, p.amount AS payment_amount,
-<<<<<<< HEAD
         b.id AS booking_id, b.trip_id, bt.operator_id, u.full_name AS user_name
        FROM refunds r
        JOIN payments p ON p.id = r.payment_id
        JOIN bookings b ON b.id = p.booking_id
        JOIN bus_trips bt ON bt.id = b.trip_id AND bt.deleted_at IS NULL
-=======
-        b.id AS booking_id, u.full_name AS user_name
-       FROM refunds r
-       JOIN payments p ON p.id = r.payment_id
-       JOIN bookings b ON b.id = p.booking_id
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
        JOIN users u    ON u.id = b.user_id AND u.deleted_at IS NULL
        WHERE r.id = ?`, [id]
     );
@@ -91,8 +70,4 @@ const RefundModel = {
   },
 };
 
-<<<<<<< HEAD
 export default RefundModel;
-=======
-export default RefundModel;
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a

@@ -1,4 +1,4 @@
-import db from '../config/db';
+﻿import db from '../config/db';
 
 const TripSeatModel = {
   getAll: async ({ trip_id, status } = {}) => {
@@ -38,14 +38,11 @@ const TripSeatModel = {
     return result.affectedRows;
   },
 
-<<<<<<< HEAD
   deleteByTripId: async (trip_id) => {
     const [result] = await db.query('DELETE FROM trip_seats WHERE trip_id = ?', [trip_id]);
     return result.affectedRows;
   },
 
-=======
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
   lockSeat: async (id, user_id, lockMinutes = 10) => {
     const locked_until = new Date(Date.now() + lockMinutes * 60 * 1000);
     const [result] = await db.query(
@@ -82,8 +79,4 @@ const TripSeatModel = {
   },
 };
 
-<<<<<<< HEAD
 export default TripSeatModel;
-=======
-export default TripSeatModel;
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a

@@ -1,4 +1,4 @@
-import { Router } from 'express';
+﻿import { Router } from 'express';
 import * as controller from '../controllers/bookingController';
 import { validate } from '../config/joi.validate';
 import { createBookingSchema, updateBookingStatusSchema, listBookingSchema } from '../validators';
@@ -10,10 +10,7 @@ const authenticated = [authenticate];
 const manageBookings = [authenticate, authorize('admin', 'operator_staff')];
 
 router.get('/',             manageBookings, validate(listBookingSchema, 'query'), controller.getAll);
-<<<<<<< HEAD
 router.get('/operator/trips/:trip_id', manageBookings, validate(listBookingSchema, 'query'), controller.getByTripId);
-=======
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
 router.get('/:id',          authenticated, controller.getById);
 router.post('/',            authenticated, validate(createBookingSchema), controller.create);
 router.patch('/:id/status', manageBookings, validate(updateBookingStatusSchema), controller.updateStatus);

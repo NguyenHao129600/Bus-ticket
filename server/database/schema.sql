@@ -131,6 +131,32 @@ CREATE TABLE IF NOT EXISTS bookings (
   CONSTRAINT fk_booking_trip FOREIGN KEY (trip_id) REFERENCES bus_trips(id)
 );
 
+CREATE TABLE IF NOT EXISTS payments (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  booking_id INT UNSIGNED NOT NULL,
+  amount DECIMAL(12,2) NOT NULL,
+  method ENUM('momo', 'zalopay', 'cash', 'bank_transfer') NOT NULL,
+  provider VARCHAR(50) NULL,
+  transaction_id VARCHAR(100) NULL,
+  status ENUM('pending', 'success', 'failed', 'refunded') NOT NULL DEFAULT 'pending',
+  paid_at DATETIME NULL,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL,
+  CONSTRAINT fk_payment_booking FOREIGN KEY (booking_id) REFERENCES bookings(id)
+);
+
+CREATE TABLE IF NOT EXISTS refunds (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  payment_id INT UNSIGNED NOT NULL,
+  amount DECIMAL(12,2) NOT NULL,
+  reason VARCHAR(255) NULL,
+  status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'pending',
+  refunded_at DATETIME NULL,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL,
+  CONSTRAINT fk_refund_payment FOREIGN KEY (payment_id) REFERENCES payments(id)
+);
+
 CREATE TABLE IF NOT EXISTS booking_items (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   booking_id INT UNSIGNED NOT NULL,

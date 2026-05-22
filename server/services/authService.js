@@ -1,11 +1,8 @@
-import bcrypt from 'bcrypt';
+﻿import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import UserModel from '../models/userModel';
-<<<<<<< HEAD
 import OperatorModel from '../models/operatorModel';
 import OperatorStaffModel from '../models/operatorStaffModel';
-=======
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
 import env from '../config/env';
 import AppError from '../utils/AppError';
 
@@ -38,7 +35,6 @@ const signToken = (user) => {
   );
 };
 
-<<<<<<< HEAD
 const signOperatorStaffToken = ({ user, staff }) => {
   if (!env.JWT_SECRET) {
     throw new AppError('JWT_SECRET is not configured', 500);
@@ -74,8 +70,6 @@ const sanitizeOperatorStaff = (staff) => {
   };
 };
 
-=======
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
 const AuthService = {
   register: async ({ full_name, email, password, phone_number }) => {
     const existing = await UserModel.getByEmail(email);
@@ -116,7 +110,6 @@ const AuthService = {
     };
   },
 
-<<<<<<< HEAD
   registerOperatorStaff: async ({
     full_name,
     email,
@@ -228,8 +221,6 @@ const AuthService = {
     };
   },
 
-=======
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
   getProfile: async (userId) => {
     const user = await UserModel.getById(userId);
     if (!user) {

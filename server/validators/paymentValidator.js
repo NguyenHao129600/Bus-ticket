@@ -1,4 +1,4 @@
-import Joi from 'joi';
+﻿import Joi from 'joi';
 
 export const createPaymentSchema = Joi.object({
   booking_id: Joi.number().integer().positive().required(),
@@ -16,13 +16,7 @@ export const listPaymentSchema = Joi.object({
   page: Joi.number().integer().min(1).optional(),
   limit: Joi.number().integer().min(1).max(100).optional(),
   booking_id: Joi.number().integer().positive().optional(),
-<<<<<<< HEAD
   trip_id: Joi.number().integer().positive().optional(),
   status: Joi.string().valid('pending', 'success', 'failed', 'refunded').optional(),
   method: Joi.string().valid('momo', 'zalopay', 'cash', 'bank_transfer').optional(),
 });
-=======
-  status: Joi.string().valid('pending', 'success', 'failed', 'refunded').optional(),
-  method: Joi.string().valid('momo', 'zalopay', 'cash', 'bank_transfer').optional(),
-});
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a

@@ -1,8 +1,7 @@
-import { Router } from 'express';
+﻿import { Router } from 'express';
 import * as ctrl from '../controllers/paymentController';
 import { validate } from '../config/joi.validate';
 import { createPaymentSchema, updatePaymentStatusSchema, listPaymentSchema } from '../validators';
-<<<<<<< HEAD
 import authenticate from '../middlewares/authenticate';
 import authorize from '../middlewares/authorize';
 
@@ -18,16 +17,3 @@ router.patch('/:id/status',            managePayments, validate(updatePaymentSta
 router.delete('/:id',                  managePayments, ctrl.remove);
 
 export default router;
-=======
-
-const router = Router();
-
-router.get('/',                        validate(listPaymentSchema, 'query'), ctrl.getAll);
-router.get('/booking/:booking_id',     ctrl.getByBooking);
-router.get('/:id',                     ctrl.getById);
-router.post('/',                       validate(createPaymentSchema), ctrl.create);
-router.patch('/:id/status',            validate(updatePaymentStatusSchema), ctrl.updateStatus);
-router.delete('/:id',                  ctrl.remove);
-
-export default router;
->>>>>>> 3280072fb40a74f0a1a6893a1725e6cea9f2671a
