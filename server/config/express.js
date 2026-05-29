@@ -13,6 +13,7 @@ app.set('port', env.APP_PORT);
 app.set('host', env.APP_HOST);
 app.disable('x-powered-by');
 
+app.use('/dist', express.static(constant.distDir));
 app.use(express.static(constant.distDir));
 
 app.use(helmet());
