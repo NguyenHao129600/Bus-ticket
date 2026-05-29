@@ -26,6 +26,10 @@ app.use(requestLogger);
 app.use(rateLimiter);
 app.use('/api', routes);
 
+app.get(/^\/(?!api\/?).*/, (req, res) => {
+  return res.sendFile(`${process.cwd()}/public/index.html`);
+});
+
 app.use(joiErrorHandler);
 app.use(errorHandler.notFound);
 app.use(errorHandler.genericErrorHandler);
