@@ -34,7 +34,21 @@ export const listBusTripSchema = Joi.object({
   operator_id: Joi.number().integer().positive().optional(),
   route_id:    Joi.number().integer().positive().optional(),
   bus_id:      Joi.number().integer().positive().optional(),
+  trip_type:   Joi.string().valid('one_way', 'round_trip').optional(),
+  departure_date: Joi.date().iso().optional(),
+  return_date: Joi.date().iso().optional(),
+  departure_station_id: Joi.number().integer().positive().optional(),
+  arrival_station_id:   Joi.number().integer().positive().optional(),
   status:      Joi.string().valid(...TRIP_STATUSES).optional(),
   from_date:   Joi.date().iso().optional(),
   to_date:     Joi.date().iso().optional(),
+  departure_keyword: Joi.string().max(100).optional(),
+  arrival_keyword:   Joi.string().max(100).optional(),
+  operator_keyword:  Joi.string().max(100).optional(),
+}).custom((value, helpers) => {
+  if (value.trip_type === 'round_trip' && !value.return_date) {
+    return helpers.message('return_date is required when trip_type is round_trip');
+  }
+
+  return value;
 });

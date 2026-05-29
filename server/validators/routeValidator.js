@@ -19,4 +19,7 @@ export const listRouteSchema = Joi.object({
   operator_id:          Joi.number().integer().positive().optional(),
   departure_station_id: Joi.number().integer().positive().optional(),
   arrival_station_id:   Joi.number().integer().positive().optional(),
+  departure_keyword:    Joi.string().max(100).optional(),
+  arrival_keyword:      Joi.string().max(100).optional(),
+  operator_keyword:     Joi.string().max(100).optional(),
 });

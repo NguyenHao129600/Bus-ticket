@@ -6,7 +6,10 @@ const StationModel = {
     const params = [];
     let where = 'WHERE 1=1';
     if (province) { where += ' AND province = ?';    params.push(province); }
-    if (search)   { where += ' AND name LIKE ?';     params.push(`%${search}%`); }
+    if (search) {
+      where += ' AND (name LIKE ? OR province LIKE ? OR address LIKE ?)';
+      params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+    }
     const [countRows] = await db.query(`SELECT COUNT(*) AS total FROM stations ${where}`, params);
     const total = countRows[0].total;
     const [rows] = await db.query(

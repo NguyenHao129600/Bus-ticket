@@ -8,6 +8,17 @@ import AppError from '../utils/AppError';
 
 const isOperatorStaff = (user) => user && user.role === 'operator_staff';
 
+const getDayRange = (dateInput) => {
+  const date = new Date(dateInput);
+  const start = new Date(date);
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date(date);
+  end.setHours(23, 59, 59, 999);
+
+  return { start, end };
+};
+
 const getScopedOperatorId = (req, requestedOperatorId, fallbackOperatorId = null) => {
   if (isOperatorStaff(req.user)) {
     const tokenOperatorId = Number(req.user.operator_id);
@@ -72,8 +83,62 @@ const syncTripSeatsIfBusChanged = async (tripId, nextBusId, previousBusId) => {
 
 export const getAll = async (req, res, next) => {
   try {
-    const { page, limit, operator_id, route_id, bus_id, status, from_date, to_date } = req.query;
+    const {
+      page,
+      limit,
+      operator_id,
+      route_id,
+      bus_id,
+      status,
+      from_date,
+      to_date,
+      departure_station_id,
+      arrival_station_id,
+      departure_keyword,
+      arrival_keyword,
+      operator_keyword,
+      trip_type,
+      departure_date,
+      return_date,
+    } = req.query;
     const scopedOperatorId = isOperatorStaff(req.user) ? req.user.operator_id : operator_id;
+
+    if (trip_type === 'round_trip') {
+      if (!return_date) {
+        throw new AppError('return_date is required for round trip search', 400);
+      }
+
+      const outboundRange = getDayRange(departure_date || from_date || new Date());
+      const returnRange = getDayRange(return_date);
+      const result = await BusTripModel.searchRoundTrip({
+        page,
+        limit,
+        operator_id: scopedOperatorId,
+        route_id,
+        bus_id,
+        status,
+        departure_station_id,
+        arrival_station_id,
+        departure_keyword,
+        arrival_keyword,
+        operator_keyword,
+        outbound_from_date: outboundRange.start,
+        outbound_to_date: outboundRange.end,
+        return_from_date: returnRange.start,
+        return_to_date: returnRange.end,
+      });
+
+      return res.json({ success: true, ...result });
+    }
+
+    let resolvedFromDate = from_date;
+    let resolvedToDate = to_date;
+    if (departure_date && !from_date && !to_date) {
+      const departureRange = getDayRange(departure_date);
+      resolvedFromDate = departureRange.start;
+      resolvedToDate = departureRange.end;
+    }
+
     const result = await BusTripModel.getAll({
       page,
       limit,
@@ -81,8 +146,13 @@ export const getAll = async (req, res, next) => {
       route_id,
       bus_id,
       status,
-      from_date,
-      to_date,
+      from_date: resolvedFromDate,
+      to_date: resolvedToDate,
+      departure_station_id,
+      arrival_station_id,
+      departure_keyword,
+      arrival_keyword,
+      operator_keyword,
     });
     return res.json({ success: true, ...result });
   } catch (err) { next(err); }
@@ -99,7 +169,60 @@ export const getById = async (req, res, next) => {
 
 export const getMyTrips = async (req, res, next) => {
   try {
-    const { page, limit, route_id, bus_id, status, from_date, to_date } = req.query;
+    const {
+      page,
+      limit,
+      route_id,
+      bus_id,
+      status,
+      from_date,
+      to_date,
+      departure_station_id,
+      arrival_station_id,
+      departure_keyword,
+      arrival_keyword,
+      operator_keyword,
+      trip_type,
+      departure_date,
+      return_date,
+    } = req.query;
+
+    if (trip_type === 'round_trip') {
+      if (!return_date) {
+        throw new AppError('return_date is required for round trip search', 400);
+      }
+
+      const outboundRange = getDayRange(departure_date || from_date || new Date());
+      const returnRange = getDayRange(return_date);
+      const result = await BusTripModel.searchRoundTrip({
+        page,
+        limit,
+        operator_id: req.user.operator_id,
+        route_id,
+        bus_id,
+        status,
+        departure_station_id,
+        arrival_station_id,
+        departure_keyword,
+        arrival_keyword,
+        operator_keyword,
+        outbound_from_date: outboundRange.start,
+        outbound_to_date: outboundRange.end,
+        return_from_date: returnRange.start,
+        return_to_date: returnRange.end,
+      });
+
+      return res.json({ success: true, ...result });
+    }
+
+    let resolvedFromDate = from_date;
+    let resolvedToDate = to_date;
+    if (departure_date && !from_date && !to_date) {
+      const departureRange = getDayRange(departure_date);
+      resolvedFromDate = departureRange.start;
+      resolvedToDate = departureRange.end;
+    }
+
     const result = await BusTripModel.getAll({
       page,
       limit,
@@ -107,8 +230,13 @@ export const getMyTrips = async (req, res, next) => {
       route_id,
       bus_id,
       status,
-      from_date,
-      to_date,
+      from_date: resolvedFromDate,
+      to_date: resolvedToDate,
+      departure_station_id,
+      arrival_station_id,
+      departure_keyword,
+      arrival_keyword,
+      operator_keyword,
     });
     return res.json({ success: true, ...result });
   } catch (err) { next(err); }
